@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   // ADMIN, MANAGER, MEMBER
+  country   String   // INDIA, AMERICA, ALL
+  orders    Order[]
+  paymentMethods PaymentMethod[]
+  createdAt DateTime @default(now())
+}
+
+model Restaurant {
+  id        Int        @id @default(autoincrement())
+  name      String
+  cuisine   String
+  country   String     // INDIA, AMERICA
+  imageUrl  String
+  menuItems MenuItem[]
+}
+
+model MenuItem {
+  id           Int         @id @default(autoincrement())
+  name         String
+  description  String
+  price        Float
+  category     String
+  restaurantId Int
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  orderItems   OrderItem[]
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  status          String      // PENDING, PLACED, CANCELLED
+  totalAmount     Float       @default(0)
+  userId          Int
+  user            User        @relation(fields: [userId], references: [id])
+  paymentMethodId Int?
+  paymentMethod   PaymentMethod? @relation(fields: [paymentMethodId], references: [id])
+  items           OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  quantity   Int
+  price      Float
+  orderId    Int
+  order      Order    @relation(fields: [orderId], references: [id])
+  menuItemId Int
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+}
+
+model PaymentMethod {
+  id         Int     @id @default(autoincrement())
+  type       String  // CREDIT_CARD, DEBIT_CARD, UPI
+  last4      String
+  holderName String
+  userId     Int
+  user       User    @relation(fields: [userId], references: [id])
+  orders     Order[]
+}

@@ -1,0 +1,268 @@
+{
+  "info": {
+    "name": "Slooze Food Ordering API",
+    "description": "Complete GraphQL API collection for Slooze Food Ordering App",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000/graphql" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login - Nick Fury (Admin)",
+          "event": [{ "listen": "test", "script": { "exec": ["const r = pm.response.json(); if(r.data) pm.collectionVariables.set('token', r.data.login.token);"] } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { login(email: \\\"nick@slooze.com\\\", password: \\\"password123\\\") { token user { id name email role country } } }\"}" }
+          }
+        },
+        {
+          "name": "Login - Captain Marvel (Manager-India)",
+          "event": [{ "listen": "test", "script": { "exec": ["const r = pm.response.json(); if(r.data) pm.collectionVariables.set('token', r.data.login.token);"] } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { login(email: \\\"marvel@slooze.com\\\", password: \\\"password123\\\") { token user { id name email role country } } }\"}" }
+          }
+        },
+        {
+          "name": "Login - Captain America (Manager-America)",
+          "event": [{ "listen": "test", "script": { "exec": ["const r = pm.response.json(); if(r.data) pm.collectionVariables.set('token', r.data.login.token);"] } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { login(email: \\\"america@slooze.com\\\", password: \\\"password123\\\") { token user { id name email role country } } }\"}" }
+          }
+        },
+        {
+          "name": "Login - Thanos (Member-India)",
+          "event": [{ "listen": "test", "script": { "exec": ["const r = pm.response.json(); if(r.data) pm.collectionVariables.set('token', r.data.login.token);"] } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { login(email: \\\"thanos@slooze.com\\\", password: \\\"password123\\\") { token user { id name email role country } } }\"}" }
+          }
+        },
+        {
+          "name": "Login - Travis (Member-America)",
+          "event": [{ "listen": "test", "script": { "exec": ["const r = pm.response.json(); if(r.data) pm.collectionVariables.set('token', r.data.login.token);"] } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { login(email: \\\"travis@slooze.com\\\", password: \\\"password123\\\") { token user { id name email role country } } }\"}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Restaurants (ReBAC)",
+      "item": [
+        {
+          "name": "Get Restaurants (filtered by country)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"query { restaurants { id name cuisine country imageUrl menuItems { id name description price category } } }\"}" }
+          }
+        },
+        {
+          "name": "Get Single Restaurant",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"query { restaurant(id: 1) { id name cuisine country menuItems { id name price category } } }\"}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { createOrder { id status totalAmount } }\"}" }
+          }
+        },
+        {
+          "name": "Add Item to Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { addItemToOrder(orderId: 1, menuItemId: 1, quantity: 2) { id status totalAmount items { id quantity price menuItem { name } } } }\"}" }
+          }
+        },
+        {
+          "name": "Place Order (Admin/Manager only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { placeOrder(orderId: 1, paymentMethodId: 1) { id status totalAmount } }\"}" }
+          }
+        },
+        {
+          "name": "Cancel Order (Admin/Manager only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { cancelOrder(orderId: 1) { id status } }\"}" }
+          }
+        },
+        {
+          "name": "My Orders",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"query { myOrders { id status totalAmount createdAt items { id quantity price menuItem { name } } } }\"}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments (Admin only)",
+      "item": [
+        {
+          "name": "My Payment Methods",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"query { myPaymentMethods { id type last4 holderName } }\"}" }
+          }
+        },
+        {
+          "name": "All Payment Methods (for checkout)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"query { allPaymentMethods { id type last4 holderName user { name role } } }\"}" }
+          }
+        },
+        {
+          "name": "Add Payment Method (Admin only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { addPaymentMethod(type: \\\"CREDIT_CARD\\\", last4: \\\"9999\\\", holderName: \\\"Nick Fury\\\") { id type last4 holderName } }\"}" }
+          }
+        },
+        {
+          "name": "Update Payment Method (Admin only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { updatePaymentMethod(id: 1, type: \\\"DEBIT_CARD\\\", last4: \\\"1111\\\", holderName: \\\"Nick Fury\\\") { id type last4 holderName } }\"}" }
+          }
+        },
+        {
+          "name": "Delete Payment Method (Admin only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { deletePaymentMethod(id: 1) { id } }\"}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "RBAC Tests",
+      "item": [
+        {
+          "name": "FAIL - Member tries to place order",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { placeOrder(orderId: 1, paymentMethodId: 1) { id } }\"}" }
+          }
+        },
+        {
+          "name": "FAIL - Member tries to add payment method",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { addPaymentMethod(type: \\\"CREDIT_CARD\\\", last4: \\\"1234\\\", holderName: \\\"Test\\\") { id } }\"}" }
+          }
+        },
+        {
+          "name": "FAIL - Manager tries to add payment method",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}",
+            "body": { "mode": "raw", "raw": "{\"query\":\"mutation { addPaymentMethod(type: \\\"CREDIT_CARD\\\", last4: \\\"1234\\\", holderName: \\\"Test\\\") { id } }\"}" }
+          }
+        }
+      ]
+    }
+  ]
+}

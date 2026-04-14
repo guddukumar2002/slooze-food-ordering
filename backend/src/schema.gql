@@ -1,0 +1,89 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthPayload {
+  token: String!
+  user: UserType!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type MenuItemType {
+  category: String!
+  description: String!
+  id: Int!
+  name: String!
+  price: Float!
+  restaurantId: Int!
+}
+
+type Mutation {
+  addItemToOrder(menuItemId: Int!, orderId: Int!, quantity: Int!): OrderType!
+  addPaymentMethod(holderName: String!, last4: String!, type: String!): PaymentMethodType!
+  cancelOrder(orderId: Int!): OrderType!
+  createOrder: OrderType!
+  deletePaymentMethod(id: Int!): PaymentMethodType!
+  login(email: String!, password: String!): AuthPayload!
+  placeOrder(orderId: Int!, paymentMethodId: Int!): OrderType!
+  updatePaymentMethod(holderName: String!, id: Int!, last4: String!, type: String!): PaymentMethodType!
+}
+
+type OrderItemType {
+  id: Int!
+  menuItem: MenuItemType!
+  price: Float!
+  quantity: Int!
+}
+
+type OrderType {
+  createdAt: DateTime!
+  id: Int!
+  items: [OrderItemType!]!
+  paymentMethodId: Float
+  status: String!
+  totalAmount: Float!
+  userId: Int!
+}
+
+type PaymentMethodType {
+  holderName: String!
+  id: Int!
+  last4: String!
+  type: String!
+  user: PaymentOwner
+  userId: Int!
+}
+
+type PaymentOwner {
+  name: String!
+  role: String!
+}
+
+type Query {
+  allPaymentMethods: [PaymentMethodType!]!
+  myOrders: [OrderType!]!
+  myPaymentMethods: [PaymentMethodType!]!
+  restaurant(id: Int!): RestaurantType
+  restaurants: [RestaurantType!]!
+}
+
+type RestaurantType {
+  country: String!
+  cuisine: String!
+  id: Int!
+  imageUrl: String!
+  menuItems: [MenuItemType!]!
+  name: String!
+}
+
+type UserType {
+  country: String!
+  email: String!
+  id: Int!
+  name: String!
+  role: String!
+}
