@@ -1,9 +1,8 @@
 import { PrismaClient } from '@prisma/client';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import * as bcrypt from 'bcryptjs';
+import 'dotenv/config';
 
-const adapter = new PrismaBetterSqlite3({ url: 'file:./prisma/dev.db' });
-const prisma = new PrismaClient({ adapter } as any);
+const prisma = new PrismaClient();
 
 async function main() {
   await prisma.orderItem.deleteMany();

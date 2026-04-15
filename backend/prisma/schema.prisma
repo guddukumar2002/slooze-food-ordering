@@ -3,7 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -11,8 +12,8 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      String   // ADMIN, MANAGER, MEMBER
-  country   String   // INDIA, AMERICA, ALL
+  role      String
+  country   String
   orders    Order[]
   paymentMethods PaymentMethod[]
   createdAt DateTime @default(now())
@@ -22,7 +23,7 @@ model Restaurant {
   id        Int        @id @default(autoincrement())
   name      String
   cuisine   String
-  country   String     // INDIA, AMERICA
+  country   String
   imageUrl  String
   menuItems MenuItem[]
 }
@@ -40,7 +41,7 @@ model MenuItem {
 
 model Order {
   id              Int         @id @default(autoincrement())
-  status          String      // PENDING, PLACED, CANCELLED
+  status          String
   totalAmount     Float       @default(0)
   userId          Int
   user            User        @relation(fields: [userId], references: [id])
@@ -63,7 +64,7 @@ model OrderItem {
 
 model PaymentMethod {
   id         Int     @id @default(autoincrement())
-  type       String  // CREDIT_CARD, DEBIT_CARD, UPI
+  type       String
   last4      String
   holderName String
   userId     Int
