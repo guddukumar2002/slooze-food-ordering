@@ -19,7 +19,7 @@ export default function DashboardPage() {
   const pendingOrders = orders.filter((o: any) => o.status === 'PENDING');
   const placedOrders = orders.filter((o: any) => o.status === 'PLACED');
   const totalRevenue = placedOrders.reduce((sum: number, o: any) => sum + o.totalAmount, 0);
-  const formatPrice = (p: number) => p < 100 ? `$${p.toFixed(2)}` : `₹${p.toFixed(0)}`;
+  const formatPrice = (p: number) => `₹${p.toFixed(0)}`;
 
   const statusBadge: Record<string, { bg: string; color: string; label: string }> = {
     PLACED:    { bg: 'rgba(16,185,129,0.1)', color: '#6ee7b7', label: 'Placed' },

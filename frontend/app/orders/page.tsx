@@ -43,7 +43,7 @@ export default function OrdersPage() {
     } catch (e: any) { setMsg(`❌ ${e.message}`); }
   };
 
-  const formatPrice = (p: number) => p < 100 ? `$${p.toFixed(2)}` : `₹${p.toFixed(0)}`;
+  const formatPrice = (p: number) => `₹${p.toFixed(0)}`;
 
   const statusBadge = (s: string) => {
     if (s === 'PLACED') return { bg: 'rgba(16,185,129,0.1)', color: '#6ee7b7', border: 'rgba(16,185,129,0.3)', label: 'Delivered' };

@@ -56,7 +56,7 @@ export default function RestaurantsPage() {
         return sum + (item?.price || 0) * (qty as number);
       }, 0) : 0;
 
-  const formatPrice = (p: number) => p < 100 ? `$${p.toFixed(2)}` : `₹${p.toFixed(0)}`;
+  const formatPrice = (p: number) => `₹${p.toFixed(0)}`;
 
   return (
     <AppShell>
