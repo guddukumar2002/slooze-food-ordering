@@ -3,14 +3,14 @@ import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client/react';
 import { useAuth } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
-import { MY_ORDERS, MY_PAYMENT_METHODS, PLACE_ORDER, CANCEL_ORDER } from '@/lib/queries';
+import { MY_ORDERS, ALL_PAYMENT_METHODS, PLACE_ORDER, CANCEL_ORDER } from '@/lib/queries';
 import AppShell from '@/components/AppShell';
 
 export default function OrdersPage() {
   const { user } = useAuth();
   const router = useRouter();
   const { data: ordersData, loading, refetch } = useQuery(MY_ORDERS, { fetchPolicy: 'network-only' }) as any;
-  const { data: pmData } = useQuery(MY_PAYMENT_METHODS, { fetchPolicy: 'network-only' }) as any;
+  const { data: pmData } = useQuery(ALL_PAYMENT_METHODS, { fetchPolicy: 'network-only' }) as any;
   const [placeOrder] = useMutation(PLACE_ORDER) as any;
   const [cancelOrder] = useMutation(CANCEL_ORDER) as any;
   const [checkoutId, setCheckoutId] = useState<number | null>(null);
@@ -53,10 +53,10 @@ export default function OrdersPage() {
 
   return (
     <AppShell>
-      <main className="pt-8 px-6 max-w-7xl mx-auto">
-        <div className="mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight mb-2" style={{ color: '#dae2fd' }}>Order History</h1>
-          <p style={{ color: '#c7c4d8' }}>Track and manage your gastronomic journeys.</p>
+      <main className="pt-4 sm:pt-6 px-4 sm:px-6 pb-6 max-w-7xl mx-auto">
+        <div className="mb-6">
+          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-1" style={{ color: '#dae2fd' }}>Order History</h1>
+          <p className="text-sm" style={{ color: '#c7c4d8' }}>Track and manage your gastronomic journeys.</p>
         </div>
 
         {msg && (
@@ -138,11 +138,11 @@ export default function OrdersPage() {
                                     className="w-full rounded-xl px-3 py-2.5 text-sm outline-none"
                                     style={{ background: '#0f1829', color: '#dae2fd', border: '1px solid rgba(70,69,85,0.3)' }}>
                                     <option value="">Select payment method</option>
-                                    {pmData?.myPaymentMethods?.map((pm: any) => (
+                                    {pmData?.allPaymentMethods?.map((pm: any) => (
                                       <option key={pm.id} value={pm.id}>{pm.type.replace('_', ' ')} •••• {pm.last4}</option>
                                     ))}
                                   </select>
-                                  {!pmData?.myPaymentMethods?.length && (
+                                  {!pmData?.allPaymentMethods?.length && (
                                     <p className="text-xs" style={{ color: '#ffb695' }}>No payment methods. Admin must add one first.</p>
                                   )}
                                   <div className="flex gap-2">

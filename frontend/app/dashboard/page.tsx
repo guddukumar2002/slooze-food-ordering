@@ -32,10 +32,10 @@ export default function DashboardPage() {
 
   return (
     <AppShell>
-      <main className="px-4 sm:px-6 py-6 max-w-7xl mx-auto space-y-6">
+      <main className="pt-4 sm:pt-6 px-4 sm:px-6 pb-6 max-w-7xl mx-auto space-y-5 sm:space-y-6">
 
         {/* ── Welcome ── */}
-        <section className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <section className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-widest mb-2"
               style={{ background: 'rgba(164,65,0,0.25)', color: '#ffb695' }}>
@@ -63,7 +63,7 @@ export default function DashboardPage() {
         </section>
 
         {/* ── Stats ── */}
-        <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <section className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
           {[
             { label: 'Total Revenue', value: formatPrice(totalRevenue), sub: `${placedOrders.length} placed orders`, icon: '💰', color: '#34d399' },
             { label: 'Pending Orders', value: String(pendingOrders.length), sub: 'Awaiting checkout', icon: '🛵', color: '#818cf8' },

@@ -6,10 +6,10 @@
 ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat&logo=prisma&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat&logo=sqlite&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-000000?style=flat&logo=jsonwebtokens&logoColor=white)
 
-A full-stack role-based food ordering application where employees of a company can browse restaurants, create orders, and checkout — with strict access control based on their role and country.
+A full-stack role-based food ordering application where employees can browse restaurants, create orders, and checkout — with strict access control based on their role and country.
 
 ---
 
@@ -31,7 +31,7 @@ Nick Fury is a business owner with 5 employees. He needs a web-based food orderi
 | Layer | Technology |
 |-------|-----------|
 | Backend | NestJS · GraphQL (code-first) · Prisma ORM |
-| Database | SQLite |
+| Database | PostgreSQL (Supabase) |
 | Auth | JWT · Passport.js |
 | Frontend | Next.js 16 · TypeScript · Tailwind CSS |
 | API Client | Apollo Client |
@@ -84,7 +84,7 @@ Nick Fury is a business owner with 5 employees. He needs a web-based food orderi
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/slooze-food-ordering.git
+git clone https://github.com/guddukumar2002/slooze-food-ordering.git
 cd slooze-food-ordering
 ```
 
@@ -93,7 +93,15 @@ cd slooze-food-ordering
 ```bash
 cd backend
 npm install
+
+# Create .env file with your database URL
+echo DATABASE_URL="your_postgresql_url" > .env
+
+# Run migrations and seed
+npx prisma migrate dev
 npx ts-node --skip-project prisma/seed.ts
+
+# Build and start
 npm run build
 node dist/src/main.js
 ```
@@ -131,7 +139,7 @@ slooze-food-ordering/
 │   ├── prisma/
 │   │   ├── schema.prisma         # Database schema
 │   │   ├── seed.ts               # Seed data (6 users, 6 restaurants, 30 menu items)
-│   │   └── dev.db                # SQLite database
+│   │   └── migrations/           # Database migrations
 │   └── src/
 │       ├── auth/                 # JWT auth, guards, decorators
 │       ├── restaurants/          # Restaurant & menu queries (ReBAC filter)
@@ -202,7 +210,7 @@ Browser (Next.js + Apollo Client)
            ↓  GraphQL over HTTP
     NestJS Backend (Port 4000)
            ↓  Prisma ORM
-       SQLite Database
+    PostgreSQL (Supabase)
 ```
 
 ### Auth Flow
@@ -231,3 +239,20 @@ Browser (Next.js + Apollo Client)
 - **6 restaurants** — 3 Indian, 3 American
 - **30 menu items** — 5 per restaurant
 - **2 payment methods** — pre-seeded for Nick Fury (Admin)
+
+---
+
+## 🎨 Features
+
+- ✅ **Dark theme UI** with glassmorphism effects
+- ✅ **Fully responsive** — mobile, tablet, desktop
+- ✅ **Real-time data** with PostgreSQL (Supabase)
+- ✅ **Role-based navigation** — UI adapts to user role
+- ✅ **Country-based filtering** — ReBAC implementation
+- ✅ **Professional design** — production-ready UI/UX
+
+---
+
+## 📝 License
+
+This project is for educational/assignment purposes.
