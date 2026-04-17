@@ -17,6 +17,7 @@ export default function RestaurantsPage() {
   const [cart, setCart] = useState<Record<number, number>>({});
   const [activeCategory, setActiveCategory] = useState('All');
   const [msg, setMsg] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => { if (!user) router.push('/login'); }, [user, router]);
   if (!user) return null;
@@ -39,6 +40,7 @@ export default function RestaurantsPage() {
 
   const submitCart = async () => {
     if (!activeOrder || !Object.keys(cart).length) return;
+    setSubmitting(true);
     try {
       for (const [menuItemId, quantity] of Object.entries(cart)) {
         await addItem({ variables: { orderId: activeOrder.id, menuItemId: parseInt(menuItemId), quantity } });
@@ -47,6 +49,7 @@ export default function RestaurantsPage() {
       setCart({});
       setSelectedRestaurant(null);
     } catch (e: any) { setMsg(`❌ ${e.message}`); }
+    finally { setSubmitting(false); }
   };
 
   const cartCount = Object.values(cart).reduce((a: any, b: any) => a + b, 0);
@@ -187,9 +190,18 @@ export default function RestaurantsPage() {
                               <span className="font-bold" style={{ color: '#c3c0ff' }}>{formatPrice(cartTotal)}</span>
                             </div>
                             <button onClick={submitCart}
-                              className="w-full py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95"
+                              disabled={submitting}
+                              className="w-full py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95 disabled:opacity-70"
                               style={{ background: 'linear-gradient(135deg, #c3c0ff, #4f46e5)', color: '#1d00a5', boxShadow: '0 4px 15px rgba(79,70,229,0.3)' }}>
-                              Add to Order
+                              {submitting ? (
+                                <span className="flex items-center justify-center gap-2">
+                                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                                  </svg>
+                                  Adding...
+                                </span>
+                              ) : 'Add to Order'}
                             </button>
                           </div>
                         )}
@@ -228,9 +240,10 @@ export default function RestaurantsPage() {
               <div className="flex items-center gap-3">
                 <span className="text-white font-extrabold">{formatPrice(cartTotal)}</span>
                 <button onClick={submitCart}
-                  className="bg-white px-5 py-2 rounded-xl font-bold text-sm transition-colors"
+                  disabled={submitting}
+                  className="bg-white px-5 py-2 rounded-xl font-bold text-sm transition-colors disabled:opacity-70"
                   style={{ color: '#4f46e5' }}>
-                  Add to Order
+                  {submitting ? 'Adding...' : 'Add to Order'}
                 </button>
               </div>
             </div>
